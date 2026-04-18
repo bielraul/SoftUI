@@ -58,34 +58,70 @@
     </div>
 
     <div id="app">
-      <header class="header">
-        <div class="logo-container">
-          <div class="logo-icon"></div>
-          <h1>SoftUI<span>Lab</span></h1>
-        </div>
-        <p>Gere designs Neumórficos profissionais com precisão matemática.</p>
-        
-        <div class="auth-bar" id="authBar">
-          <button id="loginBtn" class="action-pill primary">
-            <span>👤</span> Entrar com Google
-          </button>
-          <div id="userInfo" style="display: none;" class="user-info clickable">
-            <img id="userAvatar" src="" alt="Avatar" class="avatar">
-            <span id="userName">Usuário</span>
+      <header class="top-bar">
+        <div class="top-bar-container">
+          <!-- Brand -->
+          <div class="brand clickable" id="brandLogo">
+            <div class="logo-icon-sm"></div>
+            <h2 class="brand-name">SoftUI<span>Lab</span></h2>
+          </div>
+
+          <!-- Actions & Profile Container (Right) -->
+          <div class="header-right">
+            <nav class="top-tabs">
+              <button class="nav-link tab-btn active" data-tab="generator" id="navGenerator">Gerador</button>
+              <button class="nav-link tab-btn" data-tab="designs" id="navDesigns" style="display: none;">Designs</button>
+              <button class="nav-link tab-btn" data-tab="admin" id="adminTab" style="display: none;">Console</button>
+            </nav>
+
+            <div class="user-section">
+              <button id="loginBtn" class="login-btn-header">
+                <span>👤</span> Entrar
+              </button>
+              
+              <div id="userInfo" style="display: none;" class="user-dropdown-wrapper">
+                <div class="user-profile-trigger clickable" id="userDropdownTrigger">
+                  <img id="userAvatar" src="" alt="Avatar" class="avatar-sm">
+                  <span id="userName" class="user-name-top">Usuário</span>
+                  <span class="chevron">▼</span>
+                </div>
+                
+                <div class="dropdown-menu" id="userDropdown">
+                  <div class="dropdown-info">
+                    <p class="dropdown-label">Sessão ativa</p>
+                    <p class="dropdown-email" id="topUserEmail"></p>
+                  </div>
+                  <div class="dropdown-links">
+                    <button class="dropdown-item tab-btn" data-tab="profile">
+                      <span>👤</span> Meu Perfil
+                    </button>
+                    <button class="dropdown-item tab-btn" data-tab="designs" id="goToCloudDesigns">
+                      <span>☁️</span> Meus Designs
+                    </button>
+                    <button class="dropdown-item" id="openAccDropdownBtn">
+                      <span>♿</span> Acessibilidade
+                    </button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item logout" id="logoutBtnTop">
+                      <span>🚪</span> Sair
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <nav class="app-tabs">
-          <button class="tab-btn active" data-tab="generator">Gerador de Design</button>
-          <button class="tab-btn" data-tab="profile" id="profileTab" style="display: none;">Meu Perfil</button>
-          <button class="tab-btn" data-tab="admin" id="adminTab" style="display: none;">Console Administrativo</button>
-        </nav>
       </header>
 
       <!-- Feedback Toast -->
       <div id="feedbackToast" class="feedback-toast"></div>
 
       <div id="generatorView" class="view-content active">
+        <header class="hero-section">
+          <h1>Designs <span>Neumórficos</span> Profissionais</h1>
+          <p>Crie interfaces táteis com precisão matemática e exportação instantânea.</p>
+        </header>
+
         <div class="main-actions">
           <button id="randomBtn" class="action-pill primary">
             <span>🎲</span> Gerar Aleatório
@@ -257,11 +293,16 @@
       </div>
 
       <div id="profileView" class="view-content">
-        <section class="profile-panel">
-          <div class="section-header">
-            <h2>Meu Perfil SoftUI</h2>
-            <p>Gerencie suas informações e preferências na nuvem.</p>
-          </div>
+        <section class="profile-page-container">
+          <header class="profile-page-header">
+            <button class="back-btn clickable" onclick="navigateTo('generator')">
+              <span>←</span> Voltar ao Gerador
+            </button>
+            <div class="section-header">
+              <h2>Meu Perfil SoftUI</h2>
+              <p>Gerencie sua identidade digital e preferências na nuvem.</p>
+            </div>
+          </header>
 
           <div class="profile-layout">
             <!-- Sidebar / Quick Info -->
@@ -275,17 +316,17 @@
                     </div>
                     <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
                   </div>
-                  <h3 id="profileFullName">Usuário</h3>
+                  <h3 id="profileFullName">Carregando...</h3>
                   <p id="profileEmail" class="email-hint"></p>
                 </div>
                 
                 <div class="account-stats">
                   <div class="stat-item">
-                    <span class="stat-label">Desde</span>
+                    <span class="stat-label">Membro desde</span>
                     <span id="profileMemberSince" class="stat-value">-</span>
                   </div>
                   <div class="stat-item">
-                    <span class="stat-label">Via</span>
+                    <span class="stat-label">Autenticação</span>
                     <span id="profileProvider" class="stat-value">-</span>
                   </div>
                 </div>
@@ -294,9 +335,6 @@
                   <button id="logoutFullBtn" class="action-pill danger" style="width: 100%; justify-content: center;">
                     <span>🚪</span> Sair da Conta
                   </button>
-                  <button id="resetPrefsBtn" class="saved-btn" style="width: 100%; margin-top: 10px;">
-                    Restaurar Preferências
-                  </button>
                 </div>
               </div>
             </aside>
@@ -304,35 +342,43 @@
             <!-- Main Form -->
             <div class="profile-main-content">
               <div class="config-card">
-                <h3>Dados Pessoais</h3>
+                <div class="card-header-flex">
+                  <h3>Dados Pessoais</h3>
+                  <span class="save-status" id="saveStatus">Tudo pronto</span>
+                </div>
+                
                 <div class="admin-grid" style="grid-template-columns: 1fr 1fr;">
                   <div class="config-group">
-                    <label>Nome de Exibição</label>
-                    <input type="text" id="editDisplayName" class="neu-input" placeholder="Seu nome">
+                    <label>Nome de Exibição <span class="required">*</span></label>
+                    <input type="text" id="editDisplayName" class="neu-input" placeholder="Seu nome completo" maxlength="50">
+                    <small class="input-hint">Como os outros verão você.</small>
                   </div>
                   <div class="config-group">
                     <label>Username</label>
-                    <input type="text" id="editUsername" class="neu-input" placeholder="@usuario">
+                    <input type="text" id="editUsername" class="neu-input" placeholder="@usuario" maxlength="20">
+                    <small class="input-hint">Seu identificador único @.</small>
                   </div>
                 </div>
-                <div class="config-group" style="margin-top: 20px;">
+                
+                <div class="config-group" style="margin-top: 24px;">
                   <label>Bio Curta</label>
-                  <textarea id="editBio" class="neu-input" rows="3" placeholder="Conte um pouco sobre você..."></textarea>
+                  <textarea id="editBio" class="neu-input" rows="3" placeholder="Conte um pouco sobre sua jornada no design..." maxlength="160"></textarea>
+                  <div class="char-counter"><span id="bioCharCount">0</span>/160</div>
                 </div>
                 
-                <h3 style="margin-top: 40px;">Preferências do Sistema</h3>
+                <h3 style="margin-top: 48px;">Configurações de Experiência</h3>
                 <div class="admin-grid" style="grid-template-columns: 1fr 1fr;">
                     <div class="config-group">
-                      <label>Tema Ativo</label>
+                      <label>Tema da Interface</label>
                       <select id="prefTheme" class="neu-input">
-                        <option value="light">Claro</option>
-                        <option value="dark">Escuro (Em breve)</option>
-                        <option value="system">Sistema</option>
+                        <option value="light">Soft Light (Padrão)</option>
+                        <option value="dark">Deep Shadows (Em breve)</option>
+                        <option value="system">Sincronizar com Sistema</option>
                       </select>
                     </div>
                     <div class="config-group">
-                      <label>Acessibilidade</label>
-                      <div class="neu-item-toggle">
+                      <label>Acessibilidade Rápida</label>
+                      <div class="neu-item-toggle clickable" id="prefHighContrastBtn">
                         <span>Alto Contraste</span>
                         <div class="neu-switch" id="prefHighContrast">
                           <div class="neu-handle"></div>
@@ -341,21 +387,48 @@
                     </div>
                 </div>
 
-                <button id="saveProfileBtn" class="action-pill primary" style="margin-top: 40px; width: 100%; justify-content: center;">
-                  <span>💾</span> Salvar Perfil no Cloud
-                </button>
+                <div class="profile-footer-actions">
+                  <button id="saveProfileBtn" class="action-pill primary big-save">
+                    <span class="btn-icon">💾</span> 
+                    <span class="btn-text">Salvar Alterações</span>
+                  </button>
+                  <button id="resetPrefsBtn" class="subtle-btn">
+                    Restaurar Padrões
+                  </button>
+                </div>
               </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
-              <!-- My Cloud Designs -->
-              <div class="cloud-designs-section" id="cloudDesignsSection" style="margin-top: 60px;">
-                <div class="section-header" style="margin-bottom: 30px;">
-                  <h3>Meus Designs na Nuvem</h3>
-                  <p>Sincronizados com sua conta oficial.</p>
-                </div>
-                <div class="saved-grid" id="cloudSavedGrid">
-                  <!-- Cloud items injected here -->
-                </div>
+      <div id="designsView" class="view-content">
+        <section class="designs-page-container">
+           <header class="profile-page-header">
+            <button class="back-btn clickable" onclick="navigateTo('generator')">
+              <span>←</span> Voltar ao Gerador
+            </button>
+            <div class="section-header">
+              <h2>Meus Designs na Nuvem</h2>
+              <p>Gerencie suas criações sincronizadas em todos os dispositivos.</p>
+            </div>
+          </header>
+
+          <div class="cloud-designs-section" id="cloudDesignsSection" style="max-width: 1100px; margin: 0 auto;">
+            <div class="card-header-flex" style="margin-bottom: 24px;">
+              <h3 id="cloudDesignCountBadge">0 designs salvos</h3>
+              <div class="saved-grid-actions">
+                <button class="action-pill primary" onclick="navigateTo('generator')">+ Criar Novo</button>
               </div>
+            </div>
+
+            <div id="designsLoadingState" class="loading-placeholder" style="display: none; text-align: center; padding: 100px 0;">
+                <div class="neu-spinner" style="margin: 0 auto 20px;"></div>
+                <p style="opacity: 0.6;">Buscando sua galeria...</p>
+            </div>
+
+            <div class="saved-grid" id="cloudSavedGrid">
+              <!-- Cloud items injected here -->
             </div>
           </div>
         </section>

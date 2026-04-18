@@ -41,12 +41,30 @@ service cloud.firestore {
 
     // User Profiles
     match /users/{userId} {
+      function isValidProfile(data) {
+        return data.displayName is string && data.displayName.size() <= 60 &&
+               (data.get('username', '') is string) &&
+               (data.get('bio', '') is string) &&
+               data.email == request.auth.token.email;
+      }
+
       allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
-      allow create, update: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidProfile(request.resource.data);
+      allow update: if isSignedIn() && request.auth.uid == userId && isValidProfile(request.resource.data) &&
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'username', 'bio', 'photoURL', 'preferences', 'updatedAt']);
       
       // Designs Subcollection
       match /designs/{designId} {
-        allow read, write: if isSignedIn() && request.auth.uid == userId;
+        function isValidDesign(data) {
+          return data.name is string && data.name.size() <= 100 &&
+                 data.config is map && 
+                 isValidId(designId);
+        }
+
+        allow read, list: if isSignedIn() && request.auth.uid == userId;
+        allow create: if isSignedIn() && request.auth.uid == userId && isValidDesign(request.resource.data);
+        allow update: if isSignedIn() && request.auth.uid == userId && isValidDesign(request.resource.data);
+        allow delete: if isSignedIn() && request.auth.uid == userId;
       }
     }
   }
