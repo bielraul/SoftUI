@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helpers
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { 
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); 
+    }
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    // Admin Collection
+    match /admins/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow write: if false; // Managed via console/backend
+    }
+
+    // Configs Collection
+    match /configs/{configId} {
+      function isValidConfig(data) {
+        return data.title is string && data.title.size() <= 200 &&
+               data.description is string && data.description.size() <= 1000 &&
+               data.status in ['draft', 'active', 'closed'] &&
+               (data.get('criteria', []) is list) &&
+               data.updatedAt == request.time &&
+               data.updatedBy == request.auth.uid;
+      }
+
+      allow read: if isSignedIn();
+      allow create: if isAdmin() && isValidId(configId) && isValidConfig(request.resource.data);
+      allow update: if isAdmin() && isValidConfig(request.resource.data) &&
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'description', 'status', 'criteria', 'updatedAt', 'updatedBy']);
+      allow delete: if isAdmin();
+    }
+
+    // User Profiles
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow create, update: if isSignedIn() && request.auth.uid == userId;
+      
+      // Designs Subcollection
+      match /designs/{designId} {
+        allow read, write: if isSignedIn() && request.auth.uid == userId;
+      }
+    }
+  }
+}

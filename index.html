@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoftUI Lab - Neumorphism CSS Generator</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+<body>
+    <!-- Accessibility Toolbar -->
+    <button id="toggleAccPanel" class="acc-toggle-btn" aria-label="Abrir Opções de Acessibilidade" aria-expanded="false" title="Acessibilidade">
+      <span aria-hidden="true">♿</span>
+    </button>
+    
+    <div class="accessibility-panel" id="accessibilityPanel" aria-label="Painel de Acessibilidade" role="region">
+      <div class="acc-panel-content">
+        <header class="acc-panel-header">
+          <h3>Acessibilidade</h3>
+          <button id="closeAccPanel" class="acc-close" aria-label="Fechar Painel">✕</button>
+        </header>
+
+        <div class="acc-options-grid">
+          <div class="acc-option">
+            <label>Contraste</label>
+            <button id="toggleContrast" class="acc-action-btn" title="Alternar Alto Contraste">A◓ Alto Contraste</button>
+          </div>
+
+          <div class="acc-option">
+            <label>Tamanho da Fonte</label>
+            <div class="acc-btn-group">
+              <button id="fontDown" class="acc-action-btn" title="Diminuir Fonte">A-</button>
+              <button id="fontUp" class="acc-action-btn" title="Aumentar Fonte">A+</button>
+            </div>
+          </div>
+
+          <div class="acc-option">
+            <label>Interface & Movimento</label>
+            <button id="toggleDistraction" class="acc-action-btn">✨ Interface Limpa</button>
+            <button id="toggleMotion" class="acc-action-btn" style="margin-top: 8px;">🚫 Reduzir Movimento</button>
+            <button id="toggleGrayscale" class="acc-action-btn" style="margin-top: 8px;">🌑 Tons de Cinza</button>
+          </div>
+
+          <div class="acc-option">
+            <label>Navegação</label>
+            <button id="toggleUnderline" class="acc-action-btn">🔗 Sublinhar Links</button>
+            <button id="toggleCursor" class="acc-action-btn" style="margin-top: 8px;">🖱️ Cursor Aumentado</button>
+          </div>
+
+          <div class="acc-option">
+            <label>Sistema</label>
+            <button id="resetAccBtn" class="acc-action-btn danger">🔄 Resetar Tudo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="app">
+      <header class="header">
+        <div class="logo-container">
+          <div class="logo-icon"></div>
+          <h1>SoftUI<span>Lab</span></h1>
+        </div>
+        <p>Gere designs Neumórficos profissionais com precisão matemática.</p>
+        
+        <div class="auth-bar" id="authBar">
+          <button id="loginBtn" class="action-pill primary">
+            <span>👤</span> Entrar com Google
+          </button>
+          <div id="userInfo" style="display: none;" class="user-info clickable">
+            <img id="userAvatar" src="" alt="Avatar" class="avatar">
+            <span id="userName">Usuário</span>
+          </div>
+        </div>
+
+        <nav class="app-tabs">
+          <button class="tab-btn active" data-tab="generator">Gerador de Design</button>
+          <button class="tab-btn" data-tab="profile" id="profileTab" style="display: none;">Meu Perfil</button>
+          <button class="tab-btn" data-tab="admin" id="adminTab" style="display: none;">Console Administrativo</button>
+        </nav>
+      </header>
+
+      <!-- Feedback Toast -->
+      <div id="feedbackToast" class="feedback-toast"></div>
+
+      <div id="generatorView" class="view-content active">
+        <div class="main-actions">
+          <button id="randomBtn" class="action-pill primary">
+            <span>🎲</span> Gerar Aleatório
+          </button>
+          <button id="saveDesignBtn" class="action-pill">
+            <span>💾</span> Salvar Design
+          </button>
+        </div>
+
+        <main class="main-container">
+          <!-- Preview Area -->
+          <section class="preview-section">
+            <div class="preview-container" id="previewContainer">
+              <div class="neumorphic-element" id="targetElement"></div>
+            </div>
+          </section>
+
+          <!-- Configuration Panel -->
+          <section class="config-section">
+            <div class="config-card">
+              <div class="config-group">
+                <label for="colorInput">Cor de Base</label>
+                <div class="color-picker-wrapper">
+                  <div class="color-input-container">
+                    <input type="color" id="colorInput" value="#e6e9ef">
+                  </div>
+                  <input type="text" id="colorText" value="#e6e9ef" spellcheck="false">
+                </div>
+              </div>
+
+              <div class="config-group">
+                <label for="sizeInput" id="labelSize">Tamanho</label>
+                <input type="range" id="sizeInput" min="10" max="400" value="300">
+              </div>
+
+              <div class="config-group">
+                <label for="radiusInput" id="labelRadius">Arredondamento</label>
+                <input type="range" id="radiusInput" min="0" max="200" value="50">
+              </div>
+
+              <div class="config-group">
+                <label for="distanceInput" id="labelDistance">Distância</label>
+                <input type="range" id="distanceInput" min="0" max="50" value="20">
+              </div>
+
+              <div class="config-group">
+                <label for="blurInput" id="labelBlur">Intensidade do Blur</label>
+                <input type="range" id="blurInput" min="0" max="100" value="40">
+              </div>
+
+              <div class="config-group">
+                <label for="intensityInput" id="labelIntensity">Contraste da Sombra</label>
+                <input type="range" id="intensityInput" min="0" max="1" step="0.01" value="0.15">
+              </div>
+
+              <div class="config-group">
+                <label>Direção da Iluminação</label>
+                <div class="direction-selector">
+                  <button class="dir-btn" data-dir="top-left" title="Noroeste">↖</button>
+                  <button class="dir-btn" data-dir="top-right" title="Nordeste">↗</button>
+                  <button class="dir-btn" data-dir="bottom-left" title="Sudoeste">↙</button>
+                  <button class="dir-btn active" data-dir="bottom-right" title="Sudeste">↘</button>
+                </div>
+              </div>
+
+              <div class="config-group">
+                <label>Estilo de Superfície</label>
+                <div class="shape-selector">
+                  <button class="shape-btn active" data-shape="flat">Plano</button>
+                  <button class="shape-btn" data-shape="concave">Côncavo</button>
+                  <button class="shape-btn" data-shape="convex">Convexo</button>
+                  <button class="shape-btn" data-shape="pressed">Pressionado</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- CSS Output Area -->
+        <section class="output-section">
+          <div class="code-container">
+            <header class="code-header">
+              <h3>Exportação Avançada</h3>
+            </header>
+            <pre id="cssCode"></pre>
+            <div class="export-actions">
+              <button id="copyBtn" class="copy-button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copiar CSS
+              </button>
+              <button id="exportJsonBtn" class="copy-button">
+                <span>{ }</span> Exportar JSON
+              </button>
+              <button id="exportPngBtn" class="copy-button">
+                <span>🖼️</span> Exportar PNG
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Saved Designs Section -->
+        <section class="saved-designs-section" id="savedDesignsSection" style="display: none;">
+          <div class="section-header">
+            <h2>Designs Salvos</h2>
+            <p>Seus presets personalizados armazenados localmente.</p>
+          </div>
+          <div class="saved-grid" id="savedGrid">
+            <!-- Saved items will be injected here -->
+          </div>
+        </section>
+      </div>
+
+      <div id="adminView" class="view-content">
+        <section class="admin-panel">
+          <div class="section-header">
+            <h2>Configuração do Sistema de Julgamento</h2>
+            <p>Gerencie critérios, avaliadores e parâmetros do evento.</p>
+          </div>
+
+          <div class="admin-grid">
+            <div class="config-card admin-form">
+              <h3>Novo Critério</h3>
+              <div class="config-group">
+                <label>Nome do Critério</label>
+                <input type="text" id="criteriaName" class="neu-input" placeholder="Ex: Criatividade">
+              </div>
+              <div class="config-group">
+                <label>Peso (0-10)</label>
+                <input type="number" id="criteriaWeight" class="neu-input" value="1" min="1" max="10">
+              </div>
+              <div class="config-group">
+                <label>Pontuação Máxima</label>
+                <input type="number" id="criteriaMax" class="neu-input" value="10">
+              </div>
+              <button id="addCriteriaBtn" class="action-pill primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                Adicionar Critério
+              </button>
+            </div>
+
+            <div class="config-card">
+              <h3>Critérios Atuais</h3>
+              <div id="criteriaList" class="criteria-list">
+                <!-- Criteria items injected here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="config-card" style="margin-top: 40px;">
+            <h3>Configurações Globais do Evento</h3>
+            <div class="admin-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+              <div class="config-group">
+                <label>Nome do Evento</label>
+                <input type="text" id="eventTitle" class="neu-input" placeholder="Título do Evento">
+              </div>
+              <div class="config-group">
+                <label>Status</label>
+                <select id="eventStatus" class="neu-input">
+                  <option value="draft">Rascunho</option>
+                  <option value="active">Ativo (Em Julgamento)</option>
+                  <option value="closed">Encerrado</option>
+                </select>
+              </div>
+            </div>
+            <button id="saveConfigBtn" class="action-pill primary" style="margin-top: 30px; width: 100%; justify-content: center;">
+              <span>🚀</span> Publicar Configurações no Firestore
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div id="profileView" class="view-content">
+        <section class="profile-panel">
+          <div class="section-header">
+            <h2>Meu Perfil SoftUI</h2>
+            <p>Gerencie suas informações e preferências na nuvem.</p>
+          </div>
+
+          <div class="profile-layout">
+            <!-- Sidebar / Quick Info -->
+            <aside class="profile-sidebar">
+              <div class="config-card profile-info-card">
+                <div class="profile-header-main">
+                  <div class="avatar-large-container" id="avatarContainer">
+                    <img id="profileAvatar" src="" alt="Avatar" class="avatar-large">
+                    <div class="avatar-overlay">
+                      <span>📸</span>
+                    </div>
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                  </div>
+                  <h3 id="profileFullName">Usuário</h3>
+                  <p id="profileEmail" class="email-hint"></p>
+                </div>
+                
+                <div class="account-stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Desde</span>
+                    <span id="profileMemberSince" class="stat-value">-</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Via</span>
+                    <span id="profileProvider" class="stat-value">-</span>
+                  </div>
+                </div>
+
+                <div class="profile-actions-base">
+                  <button id="logoutFullBtn" class="action-pill danger" style="width: 100%; justify-content: center;">
+                    <span>🚪</span> Sair da Conta
+                  </button>
+                  <button id="resetPrefsBtn" class="saved-btn" style="width: 100%; margin-top: 10px;">
+                    Restaurar Preferências
+                  </button>
+                </div>
+              </div>
+            </aside>
+
+            <!-- Main Form -->
+            <div class="profile-main-content">
+              <div class="config-card">
+                <h3>Dados Pessoais</h3>
+                <div class="admin-grid" style="grid-template-columns: 1fr 1fr;">
+                  <div class="config-group">
+                    <label>Nome de Exibição</label>
+                    <input type="text" id="editDisplayName" class="neu-input" placeholder="Seu nome">
+                  </div>
+                  <div class="config-group">
+                    <label>Username</label>
+                    <input type="text" id="editUsername" class="neu-input" placeholder="@usuario">
+                  </div>
+                </div>
+                <div class="config-group" style="margin-top: 20px;">
+                  <label>Bio Curta</label>
+                  <textarea id="editBio" class="neu-input" rows="3" placeholder="Conte um pouco sobre você..."></textarea>
+                </div>
+                
+                <h3 style="margin-top: 40px;">Preferências do Sistema</h3>
+                <div class="admin-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="config-group">
+                      <label>Tema Ativo</label>
+                      <select id="prefTheme" class="neu-input">
+                        <option value="light">Claro</option>
+                        <option value="dark">Escuro (Em breve)</option>
+                        <option value="system">Sistema</option>
+                      </select>
+                    </div>
+                    <div class="config-group">
+                      <label>Acessibilidade</label>
+                      <div class="neu-item-toggle">
+                        <span>Alto Contraste</span>
+                        <div class="neu-switch" id="prefHighContrast">
+                          <div class="neu-handle"></div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <button id="saveProfileBtn" class="action-pill primary" style="margin-top: 40px; width: 100%; justify-content: center;">
+                  <span>💾</span> Salvar Perfil no Cloud
+                </button>
+              </div>
+
+              <!-- My Cloud Designs -->
+              <div class="cloud-designs-section" id="cloudDesignsSection" style="margin-top: 60px;">
+                <div class="section-header" style="margin-bottom: 30px;">
+                  <h3>Meus Designs na Nuvem</h3>
+                  <p>Sincronizados com sua conta oficial.</p>
+                </div>
+                <div class="saved-grid" id="cloudSavedGrid">
+                  <!-- Cloud items injected here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Information Sections -->
+      <section class="info-section">
+        <div class="section-header">
+          <h2>O Universo do Neumorfismo</h2>
+          <p>Uma fusão entre o realismo tátil e o minimalismo digital.</p>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="visual-example flat-example"></div>
+            <h3>Superfícies Extrudadas</h3>
+            <p>O Neumorfismo cria a ilusão de que os componentes fazem parte da mesma superfície que o fundo, apenas se elevando ou afundando nela.</p>
+          </div>
+          <div class="info-card">
+            <div class="visual-example shadow-example"></div>
+            <h3>Física da Luz</h3>
+            <p>Todo o efeito depende da interação entre uma sombra clara (o brilho da fonte de luz) e uma sombra escura (a obstrução da luz).</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="collection-section">
+        <div class="section-header">
+          <h2>Galeria de Componentes</h2>
+          <p>Exemplos práticos de aplicação do sistema SoftUI Lab.</p>
+        </div>
+
+        <div class="collection-grid">
+          <div class="showcase-item">
+            <div class="showcase-group">
+              <button class="neu-button">Botão</button>
+              <button class="neu-button pressed">Ativo</button>
+            </div>
+            <span>Interação</span>
+          </div>
+          
+          <div class="showcase-item">
+            <div class="neu-card">
+              <div class="neu-icon">💎</div>
+              <p>Card de Dados</p>
+              <button class="neu-button" style="padding: 8px 16px; font-size: 0.8rem;">Detalhes</button>
+            </div>
+            <span>Container</span>
+          </div>
+
+          <div class="showcase-item">
+            <div class="neu-progress-container">
+              <div class="neu-progress-bar" style="width: 65%;"></div>
+            </div>
+            <span>Status</span>
+          </div>
+
+          <div class="showcase-item">
+            <div class="neu-switch" id="demoSwitch">
+              <div class="neu-handle"></div>
+            </div>
+            <span>Controle</span>
+          </div>
+
+          <div class="showcase-item">
+            <input type="text" class="neu-input" placeholder="Digite algo...">
+            <span>Entrada</span>
+          </div>
+
+          <div class="showcase-item">
+            <div class="neu-panel">
+              <div class="neu-panel-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+              </div>
+              <div class="neu-panel-content">
+                Sistema Operacional v1.4
+              </div>
+            </div>
+            <span>Janela</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <h3>SoftUI<span>Lab</span></h3>
+            <p>Design de software levado a sério.</p>
+          </div>
+          <div class="footer-links">
+            <p>Feito com Vanilla JS & Modern CSS</p>
+            <p>© 2026 Studio Build</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script type="module" src="/src/script.js"></script>
+  </body>
+</html>
+

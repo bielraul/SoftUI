@@ -1,0 +1,91 @@
+{
+  "entities": {
+    "JudgingConfig": {
+      "title": "Judging Configuration",
+      "description": "System settings for the judging process",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the competition or event" },
+        "description": { "type": "string", "description": "Brief description of the event" },
+        "status": { "type": "string", "enum": ["draft", "active", "closed"] },
+        "criteria": {
+          "type": "array",
+          "description": "List of criteria for judging",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "weight": { "type": "number" },
+              "maxScore": { "type": "number" }
+            }
+          }
+        },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["title", "status"]
+    },
+    "AdminUser": {
+      "title": "Admin User",
+      "description": "Users with administrative privileges",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["superadmin", "editor"] }
+      },
+      "required": ["email", "role"]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Extended information about the user",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "username": { "type": "string" },
+        "bio": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "email": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "providerId": { "type": "string" },
+        "preferences": {
+          "type": "object",
+          "properties": {
+            "theme": { "type": "string", "enum": ["light", "dark", "system"] },
+            "highContrast": { "type": "boolean" },
+            "fontSize": { "type": "number" }
+          }
+        }
+      }
+    },
+    "UserDesign": {
+      "title": "User Design",
+      "description": "Neumorphic design saved by the user",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "config": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "config"]
+    }
+  },
+  "firestore": {
+    "/configs/{configId}": {
+      "schema": "JudgingConfig",
+      "description": "Collection of judging configurations"
+    },
+    "/admins/{userId}": {
+      "schema": "AdminUser",
+      "description": "Authorized administrative users"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile data linked by UID"
+    },
+    "/users/{userId}/designs/{designId}": {
+      "schema": "UserDesign",
+      "description": "Collection of designs created by a specific user"
+    }
+  }
+}
