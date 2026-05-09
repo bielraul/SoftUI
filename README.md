@@ -27,7 +27,8 @@ Desenvolvido como projeto de estudo e engenharia reversa de interfaces modernas,
 
 ## 📸 Preview do Projeto
 
-![Preview do SoftUI](./assets/preview.png)
+![Preview do SoftUI]<img width="1351" height="566" alt="image" src="https://github.com/user-attachments/assets/9d65bfb9-1677-4212-905e-7b77da45519a" />
+
 
 *Figura 1: Interface principal do gerador SoftUI inspirado em Neumorphism.*
 
