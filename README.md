@@ -1,69 +1,100 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🎨 SoftUI — Gerador de Interface Neumorphism
 
-# SoftUI
+## 📝 Descrição do Projeto
+O **SoftUI** é uma aplicação web moderna inspirada no conceito visual de **Soft UI / Neumorphism**, desenvolvida com foco em design minimalista, interatividade e experiência do usuário.
 
-Interface moderna inspirada no conceito de **Soft UI / Neumorphism**, desenvolvida com foco em design elegante, experiência do usuário e componentes interativos modernos.
+O projeto permite gerar componentes visuais em estilo neumórfico de forma dinâmica, possibilitando a personalização de propriedades como:
+
+- Cor do componente
+- Tamanho
+- Raio da borda
+- Distância da sombra
+- Intensidade
+- Blur (desfoque)
+- Direção da luz
+
+Além da geração visual em tempo real, a aplicação também auxilia desenvolvedores e designers na criação de estilos CSS modernos para interfaces elegantes e responsivas.
+
+Desenvolvido como projeto de estudo e engenharia reversa de interfaces modernas, o sistema explora conceitos de:
+
+- Design System
+- UI/UX
+- Responsividade
+- Componentização
+- Geração dinâmica de estilos CSS
+
+---
+
+## 📸 Preview do Projeto
+
+![Preview do SoftUI](./assets/preview.png)
+
+*Figura 1: Interface principal do gerador SoftUI inspirado em Neumorphism.*
+
+---
 
 ## 🚀 Tecnologias Utilizadas
 
-* React
-* Vite
-* TypeScript
-* Tailwind CSS
-* Node.js
-* Gemini API
+### 💻 Front-end
+- **React**
+- **TypeScript**
+- **Vite**
+- **Tailwind CSS**
 
-## 📌 Sobre o Projeto
+### ⚙️ Ferramentas & Recursos
+- **Node.js**
+- **Gemini API**
+- **Google AI Studio**
+- **CSS Moderno (Neumorphism)**
 
-O projeto foi desenvolvido com o objetivo de explorar conceitos modernos de interface utilizando o estilo visual **Soft UI (Neumorphism)**, criando uma experiência limpa, sofisticada e responsiva.
+---
 
-A aplicação apresenta componentes com sombras suaves, profundidade visual e design minimalista, proporcionando uma interface moderna e agradável para o usuário.
+## ✨ Funcionalidades
 
-Entre os principais recursos do projeto estão:
+- 🎨 Personalização visual em tempo real
+- 🌗 Interface moderna baseada em Soft UI
+- 📱 Layout responsivo
+- ⚡ Atualização dinâmica dos componentes
+- 🧩 Estrutura organizada e escalável
+- 💡 Geração visual para inspiração de interfaces
+- 🖱️ Controles intuitivos via sliders e inputs
 
-* Interface moderna em estilo Soft UI
-* Componentes responsivos
-* Layout limpo e minimalista
-* Experiência visual interativa
-* Estrutura organizada e escalável
-* Design adaptado para desktop e mobile
+---
 
-## ⚙️ Como Executar Localmente
+## 📚 Conceitos Aplicados
+
+Durante o desenvolvimento do projeto foram explorados conceitos importantes de desenvolvimento front-end moderno, como:
+
+- Componentização com React
+- Gerenciamento de estado
+- Responsividade
+- Design minimalista
+- Soft Shadows & Depth
+- UI baseada em Neumorphism
+- Estruturação de aplicações modernas com Vite
+
+---
+
+## 📊 Resultados e Aprendizados
+
+O projeto proporcionou grande aprendizado prático em desenvolvimento de interfaces modernas e experiência do usuário.
+
+### Principais aprendizados:
+- Criação de interfaces sofisticadas utilizando CSS avançado
+- Estruturação de aplicações React com Vite
+- Aplicação prática de Tailwind CSS
+- Desenvolvimento de componentes reutilizáveis
+- Melhoria na organização de projetos front-end
+- Exploração de tendências modernas de UI Design
+
+---
+
+## 🔧 Como Executar o Projeto
 
 ### Pré-requisitos
+- Node.js instalado
+- npm ou yarn
 
-* Node.js instalado
-* npm ou yarn
-
-### Instalação
-
+### Clone o repositório
 ```bash
-npm install
-```
-
-### Configurar variáveis de ambiente
-
-Crie um arquivo `.env.local` e adicione sua chave da API:
-
-```env
-GEMINI_API_KEY=sua_chave_aqui
-```
-
-### Executar o projeto
-
-```bash
-npm run dev
-```
-
-## 📷 Preview
-
-Adicione screenshots do projeto ou link da versão online aqui.
-
-## 👨‍💻 Autor
-
-Gabriel Marcolino de Oliveira
-
-* LinkedIn: https://www.linkedin.com/in/gabriel-marcolino-de-oliveira-29b706197
-* GitHub: https://github.com/gabrielmarcolinooo
+git clone https://github.com/gabrielmarcolinooo/SoftUI.git
